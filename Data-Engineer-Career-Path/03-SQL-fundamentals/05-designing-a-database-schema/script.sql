@@ -17,10 +17,6 @@ CREATE TABLE address (
   restaurant_id INTEGER REFERENCES restaurant(id) UNIQUE
 );
 
-SELECT constraint_name, table_name, column_name
-FROM information_schema.key_column_usage
-WHERE table_name = 'restaurant' OR table_name = 'address';
-
 CREATE TABLE category (
   id INTEGER PRIMARY KEY,
   name VARCHAR(20),
@@ -38,5 +34,15 @@ CREATE TABLE review (
   id INTEGER PRIMARY KEY,
   rating DECIMAL,
   description VARCHAR(100),
-  date DATE
+  date DATE,
+  restaurant_id INTEGER REFERENCES restaurant(id)
 );
+
+CREATE TABLE categories_dishes (
+  category_id INTEGER REFERENCES category(id),
+  dish_id INTEGER REFERENCES dish(id),
+  PRIMARY KEY (category_id, dish_id)
+);
+
+SELECT constraint_name, table_name, column_name
+FROM information_schema.key_column_usage;
