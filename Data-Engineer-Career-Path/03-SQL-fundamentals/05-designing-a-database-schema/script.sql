@@ -243,3 +243,93 @@ INSERT INTO categories_dishes VALUES (
   17.95
 );
 
+-- This section queries the inputted data
+SELECT 
+  restaurant.name AS restaurant_name,
+  address.street_number AS street_number,
+  address.street_name AS street_name,
+  restaurant.telephone AS telephone_number
+FROM
+  restaurant
+JOIN
+  address
+ON 
+  restaurant.id = address.restaurant_id;
+
+SELECT 
+  MAX(rating) AS best_rating
+FROM
+  review;
+
+SELECT 
+  category.name AS category,
+  dish.name AS dish_name,
+  categories_dishes.price AS price
+FROM
+  dish
+JOIN 
+  categories_dishes
+ON 
+  categories_dishes.dish_id = dish.id
+JOIN
+  category
+ON
+  categories_dishes.category_id = category.id
+ORDER BY
+  dish_name
+LIMIT 
+  8;
+
+SELECT 
+  dish.name AS spicy_dish_name,
+  category.name AS category,
+  categories_dishes.price
+FROM
+  dish
+JOIN 
+  categories_dishes
+ON 
+  categories_dishes.dish_id = dish.id
+JOIN
+  category
+ON
+  categories_dishes.category_id = category.id
+WHERE
+  dish.hot_and_spicy IS TRUE;
+
+SELECT 
+  dish_id,
+  COUNT(dish_id) AS dish_count
+FROM
+  categories_dishes
+GROUP BY
+  dish_id
+HAVING 
+  COUNT(dish_id)>1;
+
+SELECT 
+  dish.name AS dish_name,
+  COUNT(dish_id) AS dish_count
+FROM
+  categories_dishes
+JOIN
+  dish
+ON
+  categories_dishes.dish_id = dish.id
+GROUP BY
+  dish_name
+HAVING 
+  COUNT(dish_id)>1;
+
+SELECT 
+  rating AS best_rating, 
+  description
+FROM
+  review
+WHERE
+  rating = (
+    SElECT MAX(rating)
+    FROM review
+  );
+
+
